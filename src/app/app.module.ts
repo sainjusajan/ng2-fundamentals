@@ -16,7 +16,8 @@ import {
   EventRouteActivator,
   EventListResolver
 }from './events/index'
-import {TOASTR_TOKEN, Toastr} from './events/shared/toastr.service'
+import {TOASTR_TOKEN } from './events/shared/toastr.service'
+import { JQ_TOKEN } from './common/jQuery.service'
 import { EventsAppComponent } from './events-app.component';
 import { NavBarComponent } from './nav-bar/nav-bar.component';
 import { appRoutes } from './routes';
@@ -25,8 +26,10 @@ import { AuthService } from "./user/auth.service";
 import {CreateSessionComponent} from "./events/create-session.component";
 import {SessionListComponent} from "./events/session-list.component";
 import {DurationPipe} from "./events/shared/duration.pipe";
+import {SimpleModalComponent} from "./common/index";
 
-declare let toastr:Toastr;
+declare let toastr : Object;
+declare let jQuery : Object;
 
 @NgModule({
   declarations: [
@@ -41,7 +44,8 @@ declare let toastr:Toastr;
     Error404Component,
     CreateSessionComponent,
     SessionListComponent,
-    DurationPipe
+    DurationPipe,
+    SimpleModalComponent
   ],
   imports: [
     BrowserModule,
@@ -52,11 +56,8 @@ declare let toastr:Toastr;
   ],
   providers: [
     EventService,
-    {
-      provide : 'TOASTR_TOKEN',
-      useValue: toastr
-    },
-
+    { provide : 'TOASTR_TOKEN', useValue: toastr },
+    { provide : 'JQ_TOKEN', useValue: jQuery },
     EventListResolver,
     AuthService,
     EventRouteActivator
