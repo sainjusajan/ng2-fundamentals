@@ -16,7 +16,7 @@ import {
   EventRouteActivator,
   EventListResolver
 }from './events/index'
-import {TOASTR_TOKEN } from './events/shared/toastr.service'
+// import {TOASTR_TOKEN } from './events/shared/toastr.service'
 import { JQ_TOKEN } from './common/jQuery.service'
 import { EventsAppComponent } from './events-app.component';
 import { NavBarComponent } from './nav-bar/nav-bar.component';
@@ -26,10 +26,17 @@ import { AuthService } from "./user/auth.service";
 import {CreateSessionComponent} from "./events/create-session.component";
 import {SessionListComponent} from "./events/session-list.component";
 import {DurationPipe} from "./events/shared/duration.pipe";
-import {SimpleModalComponent} from "./common/index";
+import {
+  SimpleModalComponent,
+  ModalTriggerDirective
+} from "./common/index";
+import {UpvoteComponent} from "./events/upvote.component";
+import {VoterService} from "./events/voter.service";
+import {LocationValidator} from "./events/create-event/location-validator.directive";
 
-declare let toastr : Object;
-declare let jQuery : Object;
+
+// declare let toastr : any ;
+declare let jQuery : any ;
 
 @NgModule({
   declarations: [
@@ -45,7 +52,10 @@ declare let jQuery : Object;
     CreateSessionComponent,
     SessionListComponent,
     DurationPipe,
-    SimpleModalComponent
+    SimpleModalComponent,
+    ModalTriggerDirective,
+    UpvoteComponent,
+    LocationValidator
   ],
   imports: [
     BrowserModule,
@@ -56,11 +66,12 @@ declare let jQuery : Object;
   ],
   providers: [
     EventService,
-    { provide : 'TOASTR_TOKEN', useValue: toastr },
+    // { provide : 'TOASTR_TOKEN', useValue: toastr },
     { provide : 'JQ_TOKEN', useValue: jQuery },
     EventListResolver,
     AuthService,
-    EventRouteActivator
+    EventRouteActivator,
+    VoterService
     // {
     //   provide: 'canDeactivateCreateEvent',
     //   useValue: 'checkDirtyState'

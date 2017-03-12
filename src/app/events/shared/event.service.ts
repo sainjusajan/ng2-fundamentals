@@ -1,17 +1,26 @@
 import {Injectable, EventEmitter} from '@angular/core'
 import {Subject, Observable} from 'rxjs/RX'
 import {IEvent, ISession} from './event.model'
+import {Http, Response} from "@angular/http";
+
 
 @Injectable()
 export class EventService {
-  getEvents(): Observable<IEvent[]> {
 
-    let subject = new Subject<IEvent[]>()
-    setTimeout(() => {
-      subject.next(EVENTS);
-      subject.complete();
-    }, 100)
-    return subject
+  constructor(private http : Http){
+
+  }
+
+  getEvents(): Observable<IEvent[]> {
+    // let subject = new Subject<IEvent[]>()
+    // setTimeout(() => {
+    //   subject.next(EVENTS);
+    //   subject.complete();
+    // }, 100)
+    // return subject
+    return this.http.get("/api/events").map( (response: Response) => {
+      return <IEvent[]>response.json();
+    }).catch(this.handleError);
   }
 
   getEvent(id: number): IEvent {
@@ -33,6 +42,7 @@ export class EventService {
     var term = searchTerm.toLocaleLowerCase();
     var results: ISession[] = [];
 
+
     EVENTS.forEach(event => {
       var matchingSessions = event.sessions.filter(session => session.name.toLocaleLowerCase().indexOf(term) > -1);
       matchingSessions = matchingSessions.map((session: any) => {
@@ -46,6 +56,10 @@ export class EventService {
       emitter.emit(results)
     }, 100);
     return emitter;
+  }
+
+  handleError(error: Response){
+    return Observable.throw(error.statusText);
   }
 }
 

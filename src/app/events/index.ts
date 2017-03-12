@@ -5,3 +5,5 @@ export * from './events-list.component'
 export * from './event-thumbnail.component'
 export * from './shared/index'
 export * from './create-event/index'
+
+export * from './voter.service'
